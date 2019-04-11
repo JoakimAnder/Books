@@ -27,15 +27,18 @@ export default class Main extends React.Component {
 
     render() {
         return (
-            <main>
-                <div>
-                    <div style={{
-                        backgroundImage: `url(${this.state.addBookImg})`, 
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "center",
-                        backgroundSize: "cover",
-                    }}/>
-                    <form onSubmit={e => this.addBook(e)}>
+            <main className={this.props.layout} >
+                <div className="bookContainer editable">
+                    <div 
+                        className="img back"
+                        style={{
+                            backgroundImage: `url(${this.state.addBookImg})`,
+                        }}
+                    />
+                    <form 
+                        onSubmit={e => this.addBook(e)}
+                        className="info"
+                    >
                         <input 
                             placeholder="Title" 
                             required
@@ -50,7 +53,7 @@ export default class Main extends React.Component {
                         ></input>
                         <button type="submit">Add Book</button>
                     </form>
-                </div>
+                 </div>
                 {filterAndSort(this.props)} 
             </main>
         )
@@ -108,7 +111,7 @@ function filterAndSort(props) {
   
     return bookComponents.map(b => 
       <BookContainer 
-        layout={props.layout} 
+        // layout={props.layout} 
         book={b} 
         key={b.id} 
         delete={props.deleteBook} 

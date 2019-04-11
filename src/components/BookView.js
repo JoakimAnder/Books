@@ -29,20 +29,21 @@ export default class BookView extends React.Component {
         
 
         return (
-            <div>
+            <div className="bookContainer view">
                 <img 
+                    className="img"
                     src={this.props.book.img} 
                     alt="Book Cover"
                 ></img>
-                <div>
+                <div className="info">
                     <h3>{this.props.book.title}</h3>
                     <p>by</p>
                     <h4>{this.props.book.author}</h4>
-                    <div>
-                        <button onClick={() => this.props.changeView("edit")} ><i className="fas fa-edit fa-2x"></i></button>
-                        <button onClick={() => this.props.changeView("delete")} ><i className="fas fa-trash fa-2x"></i></button>
-                    </div>
                 </div>
+                    <div className="viewButtons">
+                        <button onClick={() => this.props.changeView("edit")} ><i className="fas fa-edit fa-2x"></i></button>
+                        <button onClick={() => this.props.changeView("delete")} className="del"><i className="fas fa-trash fa-2x"></i></button>
+                    </div>
             </div>
         )
     }

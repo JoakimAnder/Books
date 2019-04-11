@@ -2,13 +2,22 @@ import React from "react"
 
 import {inputIsValid} from "./Main"
 
-export default function BookEdit(props) {
-    function changeImg(event) {
-        let value = event.target.value
-        props.changeImg(() => value)
+export default class BookEdit extends React.Component {
+    constructor(props) {
+        super()
+        this.state = {
+            img: props.img,
+        }
     }
 
-    function changeBook(event) {
+    changeImg(event) {
+        let value = event.target.value
+        this.setState(prev => {
+            return {img: value}
+        })
+    }
+
+    changeBook(event) {
         event.preventDefault()
         
 
@@ -25,49 +34,57 @@ export default function BookEdit(props) {
         }
 
         if (!hasErr) {
-            props.edit({
-                id: props.book.id,
+            this.props.edit({
+                id: this.props.book.id,
                 title: title.value.trim(),
                 author: author.value.trim(),
                 img: img.value
             })
         
-            props.changeView("view")
+            this.props.changeView("view")
         }
     }
 
-    return (
-        <div>
-            <div style={{
-                backgroundImage: `url(${props.bookImg})`, 
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                backgroundSize: "cover",
-            }}/>
-            <form onSubmit={changeBook}>
-                <input 
-                    type="text"
-                    placeholder="Title"
-                    required
-                    defaultValue={props.book.title}
+    componentDidMount() {
+        this.setState(prev => {
+            return {img: this.props.book.img}
+        })
+    }
+
+    render() {
+        let img = this.state.img ? this.state.img.match(/\.(jpeg|jpg|gif|png|JPEG|JPG|GIF|PNG)$/) != null ? this.state.img : "" : ""
+
+        return (
+            <div className="bookContainer editable">
+                <div 
+                    style={{backgroundImage: `url(${img})`}}
+                    className="img back"
+                />
+                <form onSubmit={e => this.changeBook(e)} className="info">
+                    <input 
+                        type="text"
+                        placeholder="Title"
+                        required
+                        defaultValue={this.props.book.title}
+                        ></input>
+                    <input 
+                        type="text"
+                        placeholder="Author"
+                        required
+                        defaultValue={this.props.book.author}
+                        ></input>
+                    <input 
+                        type="string"
+                        placeholder="Cover"
+                        defaultValue={this.props.book.img}
+                        onChange={e => this.changeImg(e)}
                     ></input>
-                <input 
-                    type="text"
-                    placeholder="Author"
-                    required
-                    defaultValue={props.book.author}
-                    ></input>
-                <input 
-                    type="text"
-                    placeholder="Cover"
-                    defaultValue={props.book.img}
-                    onChange={changeImg}
-                ></input>
-                <div>
-                    <button type="submit">Submit</button>
-                    <button onClick={() => props.changeView("view")}>Cancel</button>
-                </div>
-            </form>
-        </div>
-    )
+                    <div>
+                        <button type="submit">Submit</button>
+                        <button type="reset" onClick={() => this.props.changeView("view")}>Cancel</button>
+                    </div>
+                </form>
+            </div>
+        )
+    }
 }

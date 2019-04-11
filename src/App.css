@@ -1,3 +1,4 @@
+    /* Global */
 * {
     padding: 0;
     margin: 0;
@@ -12,4 +13,210 @@ html, body, #root {
 .App {
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.del {
+    background-color: red;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgb(10,20,40); 
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(50,100,200); 
+}
+
+.App > button {
+    /* width: 100%; */
+}
+
+
+    /* Header */
+header {
+    /* width: 100%; */
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-areas:
+        "search search search search sort"
+        "search search search search sort"
+        "view view view view view";
+}
+
+header > .search {
+    grid-area: search;
+    /* width: 100%; */
+    /* height: 100%; */
+    display: flex;
+}
+
+header > .search > input {
+    width: 100%;
+}
+header > .search > button {
+    display: none;
+}
+
+header > .sort {
+    grid-area: sort;
+    display: grid;
+}
+header > .view {
+    grid-area: view;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr)
+}
+
+    /* Footer */
+footer {
+    /* width: 100%; */
+    background-color: white;
+    padding: 5px;
+
+    display: grid;
+    grid-template-columns: max-content 1fr;
+
+    align-items: center;
+    justify-items: center;
+}
+
+footer * {
+    padding: 5px;
+}
+
+    /* Main */
+main {
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    display: grid;
+    grid-gap: 10px;
+    padding: 1rem;
+}
+
+.bar {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 30%;
+}
+
+.box {
+    grid-template-columns: 1fr 1fr;
+}
+
+
+
+    /* BookContainer */
+.bookContainer {
+    position: relative;
+}
+.img.back {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+.viewButtons {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10;
+    opacity: 0;
+}
+
+.bookContainer:hover .viewButtons {
+    opacity: 1;
+}
+
+.viewButtons>*{
+    margin: 2px;
+    padding: 5px;
+}
+/* Bar */
+.bar .bookContainer {
+    width: 100%;
+    height: 100%;
+
+    padding: 5px;
+
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-gap: 5px;
+    
+}
+.bar img.img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.box .img.back {
+    width: 100%;
+    height: 100%;
+}
+
+.editable .info {
+    justify-content: space-around;
+}
+
+
+.info {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+}
+.info > * {
+    text-align: center;
+    z-index: 5;
+}
+
+/* Box */
+
+.box .bookContainer {
+    position: relative;
+
+    width: 100%;
+    padding-top: 125%
+    /* display: flex; */
+    /* grid-template-columns: 1fr 1fr; */
+}
+
+
+.box .img {
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    z-index: 1;
+}
+
+.box img.img:hover {
+    opacity: 0.3;
+}
+
+.box .info {
+    position: absolute;
+    /* bottom: 50%; */
+    top: 0;
+    width: 100%;
+}
+
+.box .editable .info > * {
+    color: black;
+}
+.box .info > * {
+    color: white;
+}
+.box .img.back {
+    background-size: cover;
+    /* width: 100%; */
+    /* height: 100%; */
 }

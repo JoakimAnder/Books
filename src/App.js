@@ -49,6 +49,10 @@ export default class App extends Component {
     return change => this.changeState(targetField, change)
   }
 
+  componentDidMount() {
+    this.get()
+  }
+
   render() {
     return (
       <div className="App">

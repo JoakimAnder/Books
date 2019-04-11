@@ -44,8 +44,8 @@ export default class Dao {
         if (getImgDB() === null)
             setImgDB({})
 
-        console.log("key:",getKey())
-        console.log("imgDB:",getImgDB())
+        // console.log("key:",getKey())
+        // console.log("imgDB:",getImgDB())
     }
 
     getKey() {

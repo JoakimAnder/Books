@@ -38,7 +38,7 @@ export default class BookContainer extends React.Component {
             case "view":
                 bookContainer = <BookView 
                     book={this.props.book}
-                    layout={this.props.layout}
+                    // layout={this.props.layout}
                     changeView={this.allowAccess("status")}
                 />
                 break
@@ -46,7 +46,7 @@ export default class BookContainer extends React.Component {
                 bookContainer = <BookEdit 
                     book={this.props.book}
                     bookImg={this.state.bookImg}
-                    layout={this.props.layout}
+                    // layout={this.props.layout}
                     edit={this.props.edit}
                     changeImg={this.allowAccess("bookImg")}
                     changeView={this.allowAccess("status")}
@@ -55,7 +55,7 @@ export default class BookContainer extends React.Component {
             case "delete":
                 bookContainer = <BookDelete 
                     book={this.props.book}
-                    layout={this.props.layout}
+                    // layout={this.props.layout}
                     delete={this.props.delete}
                     changeView={this.allowAccess("status")}
                 />
@@ -64,10 +64,6 @@ export default class BookContainer extends React.Component {
                 bookContainer = null
         }
 
-        return (
-            <div>
-                {bookContainer}
-            </div>
-        )
+        return bookContainer
     }
 }

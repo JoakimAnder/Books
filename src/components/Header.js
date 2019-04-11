@@ -13,7 +13,7 @@ export default function Header(props) {
         <header 
             style={props.visible ? {} : {display: "none"}}
         >
-            <form onSubmit={get}>
+            <form onSubmit={get} className="search">
                 <select onChange={e => change(e, props.changeSearchCat)}>
                     <optgroup label="Search">
                         <option value="title">Title</option>
