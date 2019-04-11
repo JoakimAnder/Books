@@ -5,7 +5,7 @@ export default function BookDelete(props) {
         <div>
             <img 
                 src={props.book.img}
-                onError={noImg}
+                onError={e => e.target.style.display = "none"}
                 alt="Book cover"
             />
             <div>
@@ -14,8 +14,4 @@ export default function BookDelete(props) {
             </div>
         </div>
     )
-}
-
-function noImg(event) {
-    event.target.style.display = "none"
 }

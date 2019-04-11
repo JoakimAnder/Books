@@ -12,8 +12,7 @@ export default class Main extends React.Component {
         this.changeState = this.changeState.bind(this)
     }
 
-
-    changeState(field, change) {
+    changeState(field, change) { // Function to easily edit one field in state
         this.setState(prev => {
             let newState = {}
             for (let e in prev) {
@@ -52,40 +51,40 @@ export default class Main extends React.Component {
                         <button type="submit">Add Book</button>
                     </form>
                 </div>
-                {filterAndSort(this.props)}
+                {filterAndSort(this.props)} 
             </main>
         )
     }
 
     addBook(event) {
         event.preventDefault()
-        // console.log("TODO: addBook in Main.js")
+
         let hasErr = false
 
-        if (!inputIsValid(event.target.children[0]))
+        let title = event.target.children[0]
+        let author = event.target.children[1]
+        let img = event.target.children[2]
+
+        if (!inputIsValid(title))
             hasErr = true;
-        if (!inputIsValid(event.target.children[1]))
+        if (!inputIsValid(author))
             hasErr = true;
 
         if (!hasErr) {
-            let title = event.target.children[0].value
-            let author = event.target.children[1].value
-            let img = event.target.children[2].value
             
-            event.target.children[0].value = ""
-            event.target.children[1].value = ""
-            event.target.children[2].value = ""
-
             this.props.addBook({
-                title: title,
-                author: author,
-                img: img,
+                title: title.value,
+                author: author.value,
+                img: img.value,
             })
+
+            title.value = ""
+            author.value = ""
+            img.value = ""
         }
     }
 
     changeImg(event) {
-        // this.changeState("addBookImgOpacity", () => 1)
         let value = event.target.value
         this.changeState("addBookImg", () => value)
     }
@@ -93,7 +92,6 @@ export default class Main extends React.Component {
 
 
 export function inputIsValid(input) {
-    console.log("lalala")
     if (input.value.trim() === "") {
         input.value = ""
         input.style.boxShadow = "0 1px 5px rgba(255, 50, 50, 0.8)"

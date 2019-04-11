@@ -15,7 +15,7 @@ export default class BookContainer extends React.Component {
         this.changeState = this.changeState.bind(this)
     }
 
-    changeState(field, change) {
+    changeState(field, change) { // Function to easily edit one field in state
         this.setState(prev => {
           let newState = {}
           for (let e in prev) {
@@ -28,7 +28,7 @@ export default class BookContainer extends React.Component {
         })
     }
 
-    allowAccess(targetField) {
+    allowAccess(targetField) { // Function to allow change of state for a single field 
         return change => this.changeState(targetField, () => change)
     }
 

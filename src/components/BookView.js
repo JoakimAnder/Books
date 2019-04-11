@@ -24,7 +24,7 @@ export default class BookView extends React.Component {
     }
 
     render() {
-        // For safety, got an error b4
+        // For safety, do occasionally get an error otherwise
         this.props.book.img = (this.props.book.img === undefined) ? "" : this.props.book.img;
         
 

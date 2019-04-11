@@ -10,12 +10,6 @@ export default class App extends Component {
   constructor() {
     super()
     
-    // if (typeof(Storage) !== "undefined") {
-    //   let key = localStorage.getItem("myApiKey")
-    //   this.dao = new Dao(key === null ? "" : key)
-    // } else {
-    //   this.dao = new Dao()
-    // }
     this.dao = new Dao()
 
 
@@ -37,7 +31,7 @@ export default class App extends Component {
     this.changeState = this.changeState.bind(this)
   }
 
-  changeState(field, change) {
+  changeState(field, change) { // Function to easily edit one field in state
     this.setState(prev => {
       let newState = {}
       for (let e in prev) {
@@ -46,12 +40,12 @@ export default class App extends Component {
         } else
           newState[e] = prev[e]
       }
-      // console.log(`Changed '${field}' to ${newState[field]}`)
+      // console.log(`Changed '${field}' to ${newState[field]}`)  // For debugging
       return newState
     })
   }
 
-  allowAccess(targetField) {
+  allowAccess(targetField) { // Function to allow change of state for a single field 
     return change => this.changeState(targetField, change)
   }
 
@@ -104,7 +98,6 @@ export default class App extends Component {
         if (d.status === "failed")
           console.error("ApiKey was not changed")
         else {
-          // localStorage.setItem("myApiKey", d.key)
           this.changeState("apiKey", () => this.dao.getKey())
         }
       })
