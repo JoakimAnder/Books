@@ -7,9 +7,11 @@ export default class Main extends React.Component {
         super()
         this.state = {
             addBookImg: "",
+            addBookImgOpacity: 0,
         }
         this.changeState = this.changeState.bind(this)
     }
+
 
     changeState(field, change) {
         this.setState(prev => {
@@ -28,19 +30,24 @@ export default class Main extends React.Component {
         return (
             <main>
                 <div>
-                    <div></div>
-                    <form onSubmit={this.addBook}>
+                    <div style={{
+                        backgroundImage: `url(${this.state.addBookImg})`, 
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "center",
+                        backgroundSize: "cover",
+                    }}/>
+                    <form onSubmit={e => this.addBook(e)}>
                         <input 
-                        placeholder="Title" 
-                        required
+                            placeholder="Title" 
+                            required
                         ></input>
                         <input 
-                        placeholder="Author" 
-                        required
+                            placeholder="Author" 
+                            required
                         ></input>
                         <input 
-                        placeholder="Cover" 
-                        onChange={onImgInputChange}
+                            placeholder="Cover" 
+                            onChange={e => this.changeImg(e)}
                         ></input>
                         <button type="submit">Add Book</button>
                     </form>
@@ -51,15 +58,42 @@ export default class Main extends React.Component {
     }
 
     addBook(event) {
-        console.log("TODO: addBook in Main.js")
+        event.preventDefault()
+        // console.log("TODO: addBook in Main.js")
+        let hasErr = false
+
+        if (!inputIsValid(event.target.children[0]))
+            hasErr = true;
+        if (!inputIsValid(event.target.children[1]))
+            hasErr = true;
+
+        if (!hasErr) {
+            let title = event.target.children[0].value
+            let author = event.target.children[1].value
+            let img = event.target.children[2].value
+            
+            event.target.children[0].value = ""
+            event.target.children[1].value = ""
+            event.target.children[2].value = ""
+
+            this.props.addBook({
+                title: title,
+                author: author,
+                img: img,
+            })
+        }
+    }
+
+    changeImg(event) {
+        // this.changeState("addBookImgOpacity", () => 1)
+        let value = event.target.value
+        this.changeState("addBookImg", () => value)
     }
 }
 
-function onImgInputChange(event) {
-    console.log("TODO: onImgInputChange in Main.js")
-}
 
-function inputIsValid(input) {
+export function inputIsValid(input) {
+    console.log("lalala")
     if (input.value.trim() === "") {
         input.value = ""
         input.style.boxShadow = "0 1px 5px rgba(255, 50, 50, 0.8)"
@@ -126,32 +160,31 @@ function sort(list, sortBy, asc) {
 
     return (asc ? list : list.reverse());
 }
-/*
-function init(addFunc){
-addFunc({
-    title: "Harry Potter and the Order of the Phoenix",
-    author: "J.K. Rowling",
-    img: ""//"https://images-na.ssl-images-amazon.com/images/I/5123M2VGGKL.jpg"
-})
-addFunc({
-    title: "To Kill a Mockingbird",
-    author: "Harper Lee",
-    img: "https://upload.wikimedia.org/wikipedia/en/7/79/To_Kill_a_Mockingbird.JPG"
-})
-addFunc({
-    title: "Pride and Prejudice",
-    author: "Jane Austen",
-    img: "https://prodimage.images-bn.com/pimages/9781435160514_p0_v1_s600x595.jpg"
-})
-addFunc({
-    title: "The Book Thief",
-    author: "Markus Zusak",
-    img: "https://images-na.ssl-images-amazon.com/images/I/91GQpmCxYRL.jpg"
-})
-addFunc({
-    title: "The Fault in Our Stars",
-    author: "John Green",
-    img: ""//"https://images.gr-assets.com/books/1360206420l/11870085.jpg"
-})
-}
-*/
+
+// function init(addFunc){
+//     addFunc({
+//         title: "Harry Potter and the Order of the Phoenix",
+//         author: "J.K. Rowling",
+//         img: ""//"https://images-na.ssl-images-amazon.com/images/I/5123M2VGGKL.jpg"
+//     })
+//     addFunc({
+//         title: "To Kill a Mockingbird",
+//         author: "Harper Lee",
+//         img: "https://upload.wikimedia.org/wikipedia/en/7/79/To_Kill_a_Mockingbird.JPG"
+//     })
+//     addFunc({
+//         title: "Pride and Prejudice",
+//         author: "Jane Austen",
+//         img: "https://prodimage.images-bn.com/pimages/9781435160514_p0_v1_s600x595.jpg"
+//     })
+//     addFunc({
+//         title: "The Book Thief",
+//         author: "Markus Zusak",
+//         img: "https://images-na.ssl-images-amazon.com/images/I/91GQpmCxYRL.jpg"
+//     })
+//     addFunc({
+//         title: "The Fault in Our Stars",
+//         author: "John Green",
+//         img: ""//"https://images.gr-assets.com/books/1360206420l/11870085.jpg"
+//     })
+// }

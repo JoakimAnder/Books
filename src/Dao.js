@@ -21,10 +21,35 @@ function checkData(data) {
 
 
 
+function getImgDB() {
+    return JSON.parse(localStorage.getItem("myImgDB"))
+}
+
+function getKey() {
+    return localStorage.getItem("myApiKey")
+}
+
+function setKey(key) {
+    localStorage.setItem("myApiKey", key)
+}
+
+function setImgDB(db) {
+    localStorage.setItem("myImgDB", JSON.stringify(db))
+}
+
 export default class Dao {
-    constructor(key="") {
-        this.key = key
-        this.imgDB = {}
+    constructor() {
+        if (getKey() === null)
+            setKey("")
+        if (getImgDB() === null)
+            setImgDB({})
+
+        console.log("key:",getKey())
+        console.log("imgDB:",getImgDB())
+    }
+
+    getKey() {
+        return getKey()
     }
     
     async newApiKey(tries=10, logErrors=false) {
@@ -32,7 +57,7 @@ export default class Dao {
             .then(myJson)
             .then(checkData)
             .then(data => {
-                this.key = data.key
+                setKey(data.key)
                 return data
             })
             .catch(err => {
@@ -46,12 +71,7 @@ export default class Dao {
     }
     
     async add(book, tries=10, logErrors=false) {
-        let operation = "?op=insert"
-        let key = "&key="+this.key;
-        let title = "&title="+book.title;
-        let author = "&author="+book.author;
-    
-        return await fetch(url + operation + key + title + author)
+        return await fetch(`${url}?op=insert&key=${getKey()}&title=${book.title}&author=${book.author}`)
             .then(myJson)
             .then(checkData)
             .then(data => {
@@ -59,7 +79,9 @@ export default class Dao {
                 return data;
             })
             .then(d => {
-                this.imgDB[d.id] = book.img
+                let newImgDB = getImgDB()
+                newImgDB[d.id] = book.img
+                setImgDB(newImgDB)
                 return d
             })
             .catch(err => {
@@ -73,10 +95,7 @@ export default class Dao {
     }
     
     async get(tries=10, logErrors=false) {
-        let op = "?op=select";
-        let key = "&key="+this.key;
-    
-        return await fetch(url+op+key)
+        return await fetch(`${url}?op=select&key=${getKey()}`)
             .then(myJson)
             .then(checkData)
             .then(d => {
@@ -86,7 +105,7 @@ export default class Dao {
                         id: d.data[i].id,
                         title: d.data[i].title,
                         author: d.data[i].author,
-                        img: this.imgDB[d.data[i].id]
+                        img: getImgDB()[d.data[i].id]
                     });
                 }
                 return list})
@@ -105,17 +124,18 @@ export default class Dao {
     }
     
     async edit(book, tries=10, logErrors=false) {
-        let op = "?op=update"
-        let key = "&key="+this.key
-        let id = "&id="+book.id
-        let title = "&title="+book.title
-        let author = "&author="+book.author
+        let key = "key="+getKey()
+        let id = "id="+book.id
+        let title = "title="+book.title
+        let author = "author="+book.author
     
-        return await fetch(url+op+key+id+title+author)
+        return await fetch(`${url}?op=update&${key}&${id}&${title}&${author}`)
             .then(myJson)
             .then(checkData)
             .then(d => {
-                this.imgDB[book.id] = book.img
+                let newImgDB = getImgDB()
+                newImgDB[book.id] = book.img
+                setImgDB(newImgDB)
                 return d
             })
             .catch(err => {
@@ -129,25 +149,24 @@ export default class Dao {
     }
     
     async remove(book, tries=10, logErrors=false) {
-        let op = "?op=delete"
-        let key = "&key="+this.key
-        let id = "&id="+book.id
+        let op = "op=delete"
+        let key = "key="+getKey()
+        let id = "id="+book.id
     
-        return await fetch(url+op+key+id)
+        return await fetch(`${url}?${op}&${key}&${id}`)
             .then(myJson)
             .then(checkData)
             .then(d => {
                 let newImgDB = {}
-                for (let id in this.imgDB) {
-                    if (id !== book.id)
-                        newImgDB[id] = this.imgDB[id]
+                for (let id in getImgDB()) {
+                    if (id !== String(book.id))
+                        newImgDB[id] = getImgDB()[id]
+                    else {
+                        console.log("Deleted:",id)
+                    }
                 }
-                this.imgDB = newImgDB
+                setImgDB(newImgDB)
                 return d
-            })
-            .then(d => {
-                console.log("Deleted: "+d.status)
-                return d;
             })
             .catch(err => {
                 if (logErrors) console.error(err)

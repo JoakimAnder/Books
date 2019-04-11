@@ -9,8 +9,15 @@ import Dao from './Dao';
 export default class App extends Component {
   constructor() {
     super()
-
+    
+    // if (typeof(Storage) !== "undefined") {
+    //   let key = localStorage.getItem("myApiKey")
+    //   this.dao = new Dao(key === null ? "" : key)
+    // } else {
+    //   this.dao = new Dao()
+    // }
     this.dao = new Dao()
+
 
     this.state = {
       headerVisible: true,
@@ -23,7 +30,7 @@ export default class App extends Component {
       searchCat: "title",
       searchTerm: "",
 
-      apiKey: this.dao.key,
+      apiKey: this.dao.getKey(),
       bookList: [],
     }
 
@@ -31,7 +38,6 @@ export default class App extends Component {
   }
 
   changeState(field, change) {
-    console.log(field,change())
     this.setState(prev => {
       let newState = {}
       for (let e in prev) {
@@ -40,7 +46,7 @@ export default class App extends Component {
         } else
           newState[e] = prev[e]
       }
-      console.log(`Changed '${field}' to ${newState[field]}`)
+      // console.log(`Changed '${field}' to ${newState[field]}`)
       return newState
     })
   }
@@ -95,9 +101,12 @@ export default class App extends Component {
   newKey() {
     this.dao.newApiKey()
       .then(d => {
-        (d.status === "failed")
-          ? console.error("ApiKey was not changed")
-          : this.changeState("apiKey", () => d.key)
+        if (d.status === "failed")
+          console.error("ApiKey was not changed")
+        else {
+          // localStorage.setItem("myApiKey", d.key)
+          this.changeState("apiKey", () => this.dao.getKey())
+        }
       })
   }
 

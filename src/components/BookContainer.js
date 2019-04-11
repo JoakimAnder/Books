@@ -5,13 +5,13 @@ import BookEdit from "./BookEdit"
 import BookDelete from "./BookDelete"
 
 export default class BookContainer extends React.Component {
-    constructor() {
+    constructor(props) {
         super()
 
         this.state = {
-            status: "view"
+            status: "view",
+            bookImg: props.book.img,
         }
-
         this.changeState = this.changeState.bind(this)
     }
 
@@ -45,8 +45,10 @@ export default class BookContainer extends React.Component {
             case "edit":
                 bookContainer = <BookEdit 
                     book={this.props.book}
+                    bookImg={this.state.bookImg}
                     layout={this.props.layout}
                     edit={this.props.edit}
+                    changeImg={this.allowAccess("bookImg")}
                     changeView={this.allowAccess("status")}
                 />
                 break

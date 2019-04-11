@@ -3,15 +3,19 @@ import React from "react"
 export default function BookDelete(props) {
     return (
         <div>
-            <button onClick={() => props.changeView("view")} >Cancel</button>
-            <button onClick={() => remove(props)} >Delete</button>
+            <img 
+                src={props.book.img}
+                onError={noImg}
+                alt="Book cover"
+            />
+            <div>
+                <button onClick={() => props.changeView("view")} >Cancel</button>
+                <button onClick={() => props.delete(props.book)} >Delete</button>
+            </div>
         </div>
     )
 }
 
-function remove(props) {
-    // console.log("deleting:",props.book);
-    
-    props.delete(props.book)
-    // props.changeView("view")
+function noImg(event) {
+    event.target.style.display = "none"
 }
